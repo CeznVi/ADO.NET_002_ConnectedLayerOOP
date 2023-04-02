@@ -9,7 +9,7 @@ namespace _002_ConnectedLayerOOP
         {
            
             DbManager dbManager = new DbManager();
-
+            dbManager.ShowUsersfromLocalStorage();
 
         }
     }

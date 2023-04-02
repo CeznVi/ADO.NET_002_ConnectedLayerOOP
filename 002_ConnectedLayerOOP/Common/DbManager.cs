@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Configuration;
 using System.Data;
+using _002_ConnectedLayerOOP.Entities;
 
 namespace _002_ConnectedLayerOOP.Common
 {
@@ -97,16 +98,15 @@ namespace _002_ConnectedLayerOOP.Common
             {
                 using (DbDataReader dbAllUser = _dbCommand.ExecuteReader())
                 {
-                    Console.WriteLine("Содержимое:");
-                    Console.ForegroundColor = ConsoleColor.Green;
                     while (dbAllUser.Read())
                     {
-                        Console.WriteLine($"Id {dbAllUser["id"]};" +
-                            $"\tLogin {dbAllUser["login"]}");
-
+                        User user = new User();
+                        user.Id = int.Parse(dbAllUser["id"].ToString());
+                        user.Login = dbAllUser["login"].ToString();
+                        user.Email = dbAllUser["email"].ToString();
+                        user.Password = dbAllUser["password"].ToString();
+                        _dataTables[tableName].Add((IDataEntity)user);
                     }
-                    Console.ResetColor();
-
                 }
             }
             else if (tableName == "usersInfo")
@@ -114,19 +114,9 @@ namespace _002_ConnectedLayerOOP.Common
 
             }
 
+
+
             _dbConnection.Close();
-
-            //_dbConnection.ConnectionString = _connectionString;
-            //_dbConnection.Open();
-
-            // foreach(var key in _dataTables) 
-            // { 
-            //    string dataTableName = key.ToString();
-            //    Console.WriteLine(dataTableName);
-            // }
-            //_dbConnection.Close();
-
-
             //должен заполнить _dataTables (получаем данные из таблиц и сохраняем в _dataTables)
         }
 
@@ -140,5 +130,21 @@ namespace _002_ConnectedLayerOOP.Common
                 GetAllData(item.Key);
             }
         }
+
+
+        ///********-------------------------PUBLIC-------------------------********///////
+        public void ShowUsersfromLocalStorage()
+        {
+            foreach (var item in _dataTables)
+            {
+                foreach (var data in item.Value)
+                {
+                    Console.WriteLine(data);
+                }
+
+            }
+        }
+
+
     }
 }

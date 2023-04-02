@@ -1,6 +1,7 @@
 ﻿using _002_ConnectedLayerOOP.Common;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace _002_ConnectedLayerOOP.Entities
@@ -14,5 +15,10 @@ namespace _002_ConnectedLayerOOP.Entities
         public string Email { get; set; }
 
         public string Password { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, Login: {Login}, Pass: {Password}, Email: {Email}";
+        }
     }
 }
