@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _002_ConnectedLayerOOP.Common;
+using System;
 
 namespace _002_ConnectedLayerOOP
 {
@@ -6,6 +7,7 @@ namespace _002_ConnectedLayerOOP
     {
         static void Main(string[] args)
         {
+            
 
         }
     }

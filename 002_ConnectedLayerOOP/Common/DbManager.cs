@@ -23,8 +23,6 @@ namespace _002_ConnectedLayerOOP.Common
 
             Init();
 
-
-
         }
 
         private void Init()
@@ -62,7 +60,8 @@ namespace _002_ConnectedLayerOOP.Common
             }
         }
 
-        private void GetAllTableName() {
+        private void GetAllTableName() 
+        {
             //должен заполнить _dataTables (получаем имена таблиц в Бд)
         }
 
