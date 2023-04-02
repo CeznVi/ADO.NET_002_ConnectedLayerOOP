@@ -60,6 +60,7 @@ namespace _002_ConnectedLayerOOP.Common
                 throw;
             }
             GetAllTableName();
+            GetDataFromDB();
 
         }
 
@@ -68,6 +69,7 @@ namespace _002_ConnectedLayerOOP.Common
         {
             _dbConnection.ConnectionString = _connectionString;
             _dbConnection.Open();
+
             DataTable dt = _dbConnection.GetSchema("Tables");
 
             foreach (DataRow row in dt.Rows)
@@ -79,17 +81,64 @@ namespace _002_ConnectedLayerOOP.Common
                     _dataTables.Add(tablename, new List<IDataEntity>());
                 }
             }
-            _dbConnection.Close();
 
-            foreach (var item in _dataTables)
-            {
-                Console.WriteLine(item.Key);
-            }
+            _dbConnection.Close();
         }
 
         private void GetAllData(string tableName)
         {
+
+            _dbConnection.ConnectionString = _connectionString;
+            _dbConnection.Open();
+
+            _dbCommand.CommandText = $"SELECT * FROM {tableName}";
+
+            if (tableName == "users")
+            {
+                using (DbDataReader dbAllUser = _dbCommand.ExecuteReader())
+                {
+                    Console.WriteLine("Содержимое:");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    while (dbAllUser.Read())
+                    {
+                        Console.WriteLine($"Id {dbAllUser["id"]};" +
+                            $"\tLogin {dbAllUser["login"]}");
+
+                    }
+                    Console.ResetColor();
+
+                }
+            }
+            else if (tableName == "usersInfo")
+            {
+
+            }
+
+            _dbConnection.Close();
+
+            //_dbConnection.ConnectionString = _connectionString;
+            //_dbConnection.Open();
+
+            // foreach(var key in _dataTables) 
+            // { 
+            //    string dataTableName = key.ToString();
+            //    Console.WriteLine(dataTableName);
+            // }
+            //_dbConnection.Close();
+
+
             //должен заполнить _dataTables (получаем данные из таблиц и сохраняем в _dataTables)
+        }
+
+        /// <summary>
+        /// Читает данные из таблиц на основе заранее полученых их названий
+        /// </summary>
+        private void GetDataFromDB() 
+        {
+            foreach (var item in _dataTables)
+            {
+                GetAllData(item.Key);
+            }
         }
     }
 }

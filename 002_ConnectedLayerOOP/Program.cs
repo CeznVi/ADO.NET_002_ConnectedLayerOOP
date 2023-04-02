@@ -7,7 +7,7 @@ namespace _002_ConnectedLayerOOP
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("j");
+           
             DbManager dbManager = new DbManager();
 
 
