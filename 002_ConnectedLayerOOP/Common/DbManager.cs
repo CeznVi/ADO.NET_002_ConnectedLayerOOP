@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Configuration;
+using System.Data;
 
 namespace _002_ConnectedLayerOOP.Common
 {
@@ -58,11 +59,32 @@ namespace _002_ConnectedLayerOOP.Common
             {
                 throw;
             }
+            GetAllTableName();
+
         }
 
+        //Получаем имена таблиц с БД
         private void GetAllTableName() 
         {
-            //должен заполнить _dataTables (получаем имена таблиц в Бд)
+            _dbConnection.ConnectionString = _connectionString;
+            _dbConnection.Open();
+            DataTable dt = _dbConnection.GetSchema("Tables");
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string tablename = (string)row[2];
+
+                if (tablename != "sysdiagrams")
+                {
+                    _dataTables.Add(tablename, new List<IDataEntity>());
+                }
+            }
+            _dbConnection.Close();
+
+            foreach (var item in _dataTables)
+            {
+                Console.WriteLine(item.Key);
+            }
         }
 
         private void GetAllData(string tableName)
