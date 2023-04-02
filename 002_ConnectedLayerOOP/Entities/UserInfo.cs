@@ -20,5 +20,10 @@ namespace _002_ConnectedLayerOOP.Entities
         public string Gender { get; set; }
 
         public User User { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, UserId:{UserId}, FIO: {Fio}, Inn: {Inn}, BDay: {BirthDate}, Gende: {Gender}";
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Configuration;
 using System.Data;
 using _002_ConnectedLayerOOP.Entities;
+using System.Linq;
 
 namespace _002_ConnectedLayerOOP.Common
 {
@@ -96,25 +97,36 @@ namespace _002_ConnectedLayerOOP.Common
 
             if (tableName == "users")
             {
-                using (DbDataReader dbAllUser = _dbCommand.ExecuteReader())
+                DbDataReader dbAllUser = _dbCommand.ExecuteReader();
+                
+                while (dbAllUser.Read())
                 {
-                    while (dbAllUser.Read())
-                    {
                         User user = new User();
-                        user.Id = int.Parse(dbAllUser["id"].ToString());
+                        user.Id = int.Parse(dbAllUser["Id"].ToString());
                         user.Login = dbAllUser["login"].ToString();
                         user.Email = dbAllUser["email"].ToString();
                         user.Password = dbAllUser["password"].ToString();
-                        _dataTables[tableName].Add((IDataEntity)user);
-                    }
+                        
+                    _dataTables[tableName].Add((IDataEntity)user);
                 }
             }
             else if (tableName == "usersInfo")
             {
+                DbDataReader dbAllUser = _dbCommand.ExecuteReader();
 
+                while (dbAllUser.Read())
+                {
+                    UserInfo userInf = new UserInfo();
+                    userInf.Id = int.Parse(dbAllUser["Id"].ToString());
+                    userInf.UserId = int.Parse(dbAllUser["userId"].ToString());
+                    userInf.Fio = dbAllUser["fio"].ToString();
+                    userInf.Inn = dbAllUser["inn"].ToString();
+                    userInf.BirthDate = ((DateTime)dbAllUser["birthDate"]);
+                    userInf.Gender = dbAllUser["gender"].ToString();
+                    
+                    _dataTables[tableName].Add((IDataEntity)userInf);
+                }
             }
-
-
 
             _dbConnection.Close();
             //должен заполнить _dataTables (получаем данные из таблиц и сохраняем в _dataTables)
@@ -133,15 +145,27 @@ namespace _002_ConnectedLayerOOP.Common
 
 
         ///********-------------------------PUBLIC-------------------------********///////
-        public void ShowUsersfromLocalStorage()
+        public void ShowUsersFromLocalStorage()
         {
             foreach (var item in _dataTables)
             {
+                if(item.Key == "users")
                 foreach (var data in item.Value)
                 {
                     Console.WriteLine(data);
                 }
+            }
+        }
 
+        public void ShowUsersInfoFromLocalStorage()
+        {
+            foreach (var item in _dataTables)
+            {
+                if (item.Key == "usersInfo")
+                    foreach (var data in item.Value)
+                    {
+                        Console.WriteLine(data);
+                    }
             }
         }
 
